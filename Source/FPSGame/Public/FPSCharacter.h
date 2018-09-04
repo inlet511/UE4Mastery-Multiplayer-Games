@@ -51,6 +51,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Gameplay")
 	bool bIsCarryingObjective;
 
+
 protected:
 	
 	/** Fires a projectile. */
