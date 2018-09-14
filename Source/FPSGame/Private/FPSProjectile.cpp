@@ -43,7 +43,12 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());		
 	}
 
-	MakeNoise(1.0f, Instigator);
+	if (Role == ROLE_Authority)
+	{
+		MakeNoise(1.0f, Instigator);
+		Destroy();
+	}
+	
 
-	Destroy();
+	
 }
