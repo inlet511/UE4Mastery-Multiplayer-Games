@@ -1,18 +1,24 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "FPSGameState.h"
+#include "FPSPlayerController.h"
 
 
 
-
-void AFPSGameState::MulitcastOnMissionComplete(APawn* IntigatorPawn, bool bMissionSuccess)
+void AFPSGameState::MulitcastOnMissionComplete_Implementation(APawn* IntigatorPawn, bool bMissionSuccess)
 {
-	for (FConstPawnIterator It = GetWorld()->GetPawnIterator(); It; It++)
+
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; It++)
 	{
-		APawn* Pawn = It->Get();
-		if (Pawn && Pawn->IsLocallyControlled())
+		AFPSPlayerController* PC = Cast<AFPSPlayerController>(It->Get());
+		if (PC && PC->IsLocalController())
 		{
-			Pawn->DisableInput(nullptr);
+			PC->OnMissionCompleted(IntigatorPawn, bMissionSuccess);
+			APawn* MyPawn = PC->GetPawn();
+			if (MyPawn)
+			{
+				MyPawn->DisableInput(PC);
+			}
 		}
 	}
 }
